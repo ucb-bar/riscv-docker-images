@@ -97,7 +97,7 @@ ENV PATH="$RISCV/bin:$PATH"
 RUN git clone http://git.veripool.org/git/verilator /tmp/verilator \
     && cd /tmp/verilator \
     && git pull \
-    && git checkout verilator_3_922 \
+    && git checkout verilator_4_008 \
     && unset VERILATOR_ROOT \
     && autoconf \
     && ./configure \
