@@ -1,11 +1,11 @@
 RISC-V Docker Images
---------------------
+====================
 
 This is a curated set of DockerFiles used to install riscv-tools and verilator versions. You can find the docker containers
 created in this repository at https://hub.docker.com/r/ucbbar/riscv-docker-images.
 
 Repository Organization
-=======================
+-----------------------
 
 This repository is split into multiple directories which build a particular tool/item. The `base`
 directory holds a `DockerFile` that setups the user, builds **SBT**, and installs any apt packages needed for subsequent builds.
@@ -26,7 +26,7 @@ hash and version of **Verilator** that they use. In summary the directory heirar
     - `RISCVTOOLS_VERSION_HASH-VERILATOR_VERSION_NUMBER`
 
 How to build
-============
+------------
 
 In order to build, run the following command:
 
@@ -39,7 +39,7 @@ in `images`) with the `TAG_NUMBER` specified. The final images created out of th
 `ucbbar/riscv-docker-images:ROCKETCHIP_VERSION_HASH-VERILATOR_VERSION_NUMBER-TAG_NUMBER`
 
 More tools...
-=============
+-------------
 
 If you would like to have a particular set of tools (updated riscv-tools, verilator, etc...) added to the curated repository and
 DockerHub, please make an GitHub issue. Thanks!
