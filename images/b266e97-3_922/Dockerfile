@@ -19,6 +19,6 @@ ENV PATH="$INSTALLED_VERILATOR_DIR:$RISCV/bin:$INSTALLED_YOSYS/bin:$PATH"
 # Setup home and the user
 ENV HOME /home/riscvuser
 WORKDIR $HOME
-USER riscvuser 
+USER riscvuser
 
 CMD ["/bin/sh"]

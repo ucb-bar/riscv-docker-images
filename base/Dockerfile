@@ -3,7 +3,7 @@ FROM openjdk:11.0.1-jdk
 # Man directory is missing in some base images
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199
 RUN apt-get update \
-    && mkdir -p /usr/share/man/man1 \ 
+    && mkdir -p /usr/share/man/man1 \
     && apt-get install -y \
                apt-transport-https \
                bzip2 \
@@ -55,7 +55,7 @@ RUN apt-get install -y \
 
 # Install apt packages for yosys
 RUN apt-get update \
-    && mkdir -p /usr/share/man/man1 \ 
+    && mkdir -p /usr/share/man/man1 \
     && apt-get install -y \
                build-essential \
                bison \
