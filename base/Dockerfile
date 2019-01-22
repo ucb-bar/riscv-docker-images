@@ -1,6 +1,6 @@
 FROM openjdk:11.0.1-jdk
 
-# man directory is missing in some base images
+# Man directory is missing in some base images
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199
 RUN apt-get update \
     && mkdir -p /usr/share/man/man1 \
@@ -24,6 +24,55 @@ RUN apt-get update \
                wget \
                xvfb \
                zip
+
+# Install RISCV toolchain apt packages
+RUN apt-get install -y \
+            autoconf \
+            automake \
+            autotools-dev \
+            babeltrace \
+            bc \
+            bison \
+            build-essential \
+            curl \
+            device-tree-compiler \
+            expat \
+            flex \
+            gawk \
+            gperf \
+            libexpat-dev \
+            libgmp-dev \
+            libmpc-dev \
+            libmpfr-dev \
+            libtool \
+            libusb-1.0-0-dev \
+            patchutils \
+            pkg-config \
+            python \
+            python-pexpect \
+            texinfo \
+            zlib1g-dev
+
+# Install apt packages for yosys
+RUN apt-get update \
+    && mkdir -p /usr/share/man/man1 \
+    && apt-get install -y \
+               build-essential \
+               bison \
+               clang \
+               flex \
+               gawk \
+               git \
+               graphviz \
+               libffi-dev \
+               libreadline-dev \
+               pkg-config \
+               python3 \
+               tcl-dev \
+               xdot
+
+# Install verilator dependencies
+# Covered by the above apt get installs
 
 # Set timezone to UTC by default
 RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
@@ -58,67 +107,5 @@ RUN echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/source
 # Install openjfx
 RUN apt-get install -y --no-install-recommends openjfx
 
-# Add RISCV toolchain necessary dependencies
-RUN apt-get install -y \
-            autoconf \
-            automake \
-            autotools-dev \
-            babeltrace \
-            bc \
-            bison \
-            build-essential \
-            curl \
-            device-tree-compiler \
-            expat \
-            flex \
-            gawk \
-            gperf \
-            libexpat-dev \
-            libgmp-dev \
-            libmpc-dev \
-            libmpfr-dev \
-            libtool \
-            libusb-1.0-0-dev \
-            patchutils \
-            pkg-config \
-            python \
-            python-pexpect \
-            texinfo \
-            zlib1g-dev
-
 # Update PATH for Java tools
 ENV PATH="/opt/sbt/bin:/opt/apache-maven/bin:/opt/apache-ant/bin:/opt/gradle/bin:$PATH"
-
-# Update RISCV/PATH vars for RISCV toolchain
-ENV RISCV="/usr/bin/riscv-tools"
-ENV PATH="$RISCV/bin:$PATH"
-
-# Install verilator
-RUN git clone http://git.veripool.org/git/verilator /tmp/verilator \
-    && cd /tmp/verilator \
-    && git pull \
-    && git checkout verilator_4_008 \
-    && unset VERILATOR_ROOT \
-    && autoconf \
-    && ./configure \
-    && make \
-    && make install \
-    && rm -rf /tmp/verilator
-ENV INSTALLED_VERILATOR="/usr/local/bin/verilator"
-
-# Install riscv-tools
-RUN git clone https://github.com/riscv/riscv-tools.git /tmp/riscv-tools\
-    && cd /tmp/riscv-tools \
-    && git submodule update --init --recursive \
-    && ./build.sh \
-    && rm -rf /tmp/riscv-tools
-
-# smoke test with path
-RUN mvn -version \
-    && ant -version \
-    && gradle -version \
-    && sbt sbtVersion
-
-USER riscvuser 
-
-CMD ["/bin/sh"]
